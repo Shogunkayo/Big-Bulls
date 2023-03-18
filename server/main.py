@@ -10,10 +10,6 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-from Cryptodome.Hash import keccak,RIPEMD160
-import hashlib
-import base58
-import ecdsa
 
 ## Functions for detecting right wallet address
 
@@ -190,8 +186,6 @@ def get_transactions_dash(key):
     data3 = data2[key]
     data4 = data3['address']
     if data4['transaction_count'] == 0:
-        return 0
-    return 1
         return 0
     return 1
 
