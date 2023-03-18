@@ -1,0 +1,6 @@
+@use '../variables' as v;
+
+.dashboard-container {
+    background-color: v.$dblack;
+    height: 100vh;
+}

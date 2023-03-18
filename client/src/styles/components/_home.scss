@@ -8,14 +8,23 @@
 .nav-left {
     display: flex;
     position: relative;
+    
+    img {
+        position: absolute;
+        left: 20px;
+        top: 10px;
+        width: 96px;
+        height: 96px;
+    }
 
     h1 {
+        margin-left: 80px;
         font-size: 2.5rem;
-        padding: 10px 40px;
+        padding: 25px 40px;
     }
 
     div {
-        padding: 18px 60px;
+        padding: 33px 60px;
         button {
             margin: 0px 25px;
             padding: 10px;
@@ -39,7 +48,7 @@
     > div {
         position: absolute;
         top: 30%;
-        left: 10%;
+        left: 6%;
         h1 {
             font-size: 3.5rem;
             line-height: 70px;
@@ -49,9 +58,13 @@
         p {
             color: v.$lblack;
             width: 60%;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             padding-bottom: 15px;
         }
+    }
+
+    .highlight {
+        color: v.$dgreen;
     }
 }
 
@@ -81,6 +94,12 @@
                 color: v.$white;
             }
         }
+
+        .form-image {
+            display: flex;
+            justify-content: space-between;
+            width: 310px;
+        }
     }
 
     .form-error{
@@ -106,7 +125,7 @@
         color: v.$cream;
         background-color: v.$dblack;
         width: 150px;
-        padding: 5px 0px;
+        padding: 4px 0px;
         height: 35px;
     }
     
@@ -121,7 +140,7 @@
     position: relative;
     justify-content: flex-end;
     div {
-        padding: 18px 60px;
+        padding: 33px 60px;
         button {
             margin: 0px 25px;
             padding: 10px;
@@ -166,3 +185,4 @@
         }
     }
 }
+
