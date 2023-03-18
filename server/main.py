@@ -10,7 +10,6 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-
 ## Functions for detecting right wallet address
 
 def bitcoin(wal_address,type):

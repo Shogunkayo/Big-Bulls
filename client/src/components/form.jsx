@@ -1,5 +1,7 @@
+import { useEffect } from "react"
 import { useState } from "react"
 import Select from 'react-select'
+import ProgressBar from "./progressBar"
 
 const Form = () => {
 
@@ -8,6 +10,9 @@ const Form = () => {
     const [inputTypeLabel, setInputTypeLabel] = useState('Public Key')
     const [image, setImage] = useState(null)
     const [imageType, setImageType] = useState('qr')
+    const [submitted, setSubmitted] = useState(false)
+    const [progress, setProgress] = useState({})
+    const [output, setOutput] = useState('')
     const [error, setError] = useState(false)
     
     const typeOptions = [
@@ -22,32 +27,45 @@ const Form = () => {
         {value: 'steg', label: 'Steg Decoder'}
     ]
 
+    const progressOptions = [
+        {value: 0, label: 'Collecting Input'},
+        {value: 25, label: 'Extracting from Image'},
+        {value: 50, label: 'Fetching from APIs'},
+        {value: 100, label: 'Displaying Data'}
+    ]
+
     const handleSubmit = e => {
+        setSubmitted(progressOptions[0])
         setError(false)
         e.preventDefault()
         
         let request_body = {'type': inputType, 'key': usrInput}
 
+        setSubmitted(progressOptions[2])
         fetch('http://localhost:5000/search', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(request_body),
             mode: 'cors'
         }).then((response) => {
+            setSubmitted(progressOptions[3])
             response.json().then((body) => {
-                console.log(body)
+                setOutput(body)
+                setSubmitted({})
             })
         }) 
     }
 
     const handleImage = (e) => {
         e.preventDefault()
+        setSubmitted(progressOptions[0])
         setError(false)
 
         if(!image){
             setError(true)
         }
 
+        setSubmitted(progressOptions[1])
         fetch('http://api.qrserver.com/v1/read-qr-code/', {
             method:'POST', 
             body: new FormData(e.target)}
@@ -56,14 +74,18 @@ const Form = () => {
                 let output = body[0].symbol[0].data.split(':')
                 let request_body = {'type': 'image', 'key' :output[1], 'currency': output[0]}
                 console.log(request_body)
+                setSubmitted(progressOptions[2])
                 fetch('http://localhost:5000/search', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(request_body),
                     mode: 'cors'
                 }).then((response) => {
+                    setSubmitted(progressOptions[3])
                     response.json().then((body) => {
                         console.log(body)
+                        setOutput(body)
+                        setSubmitted({})
                     })
                 }) 
             })
@@ -157,6 +179,9 @@ const Form = () => {
             {error && (<div className="form-error">
                 <h3>The entered input is not a valid {inputTypeLabel}!</h3>
             </div>)}
+
+            <h3>{output}</h3>
+                
         </div>
     );
 }
