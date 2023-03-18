@@ -39,7 +39,7 @@ def ethereum(wal_address,type):
         return 0
   else:
      wal_address = get_wallet_address_eth(wal_address)
-     return get_transactions_btc(wal_address)
+     return get_transaction_ethereum(wal_address)
     
 
 def monero(wal_address):
@@ -90,8 +90,9 @@ def get_wallet_address_eth(pubaddr):
     a = bytearray.fromhex(pubaddr)
     kins.update(a)
     a = kins.hexdigest()[-40:]
-    a = '0x'+a
-    return a
+    a = '0x'+str(a)
+    print(a+" --> Here")
+    return str(a)
 
 
 def get_wallet_address_btc(publickey_c):
@@ -102,7 +103,6 @@ def get_wallet_address_btc(publickey_c):
     rins.update(rmd)
     ripehashed = rins.hexdigest()
     ripehashed = "00"+ripehashed
-    base58.b58
     bt = base58.b58encode_check(bytearray.fromhex(ripehashed))
     return bt.decode()
 
@@ -140,7 +140,6 @@ def get_wallet_address_doge(public_key_hex):
 def get_wallet_address_ltc(public_key):
     # add the prefix byte 0x30 to indicate Litecoin's main network
     prefix_public_key = b'\x30' + bytes(str(public_key).encode('utf-8'))
-    print(b'\x30' + b'032c5e2e5b5a27271154d1f537b3847722b104bc642b304d78e13c9c1eb3f98f7b')
 
     # perform SHA-256 hash on the public key
     sha256_1 = hashlib.sha256(prefix_public_key).digest()
@@ -305,7 +304,7 @@ def search():
             url = "http://localhost:8081/uncompress/"+data['key']
             res = requests.get(url)
             resObj = json.loads(res.text)
-            print(resObj)
+            #print(resObj)
             overall_data = validate_for_all2(resObj,data['type'])
         # uncompressed = resObj['Uncompressed']
         # compressed = resObj['Compressed']
