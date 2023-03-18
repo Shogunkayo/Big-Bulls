@@ -10,11 +10,6 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-from Cryptodome.Hash import keccak,RIPEMD160
-import hashlib
-import base58
-import ecdsa
-
 ## Functions for detecting right wallet address
 
 def bitcoin(wal_address,type):
