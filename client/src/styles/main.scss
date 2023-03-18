@@ -1,5 +1,7 @@
 // base and layout
 @use 'variables';
+@use 'base';
 
 // components
 @use 'components/navbar';
+@use 'components/home';
