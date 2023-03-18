@@ -28,8 +28,13 @@
 }
 
 .home-left {
-    width: 130vw;
+    width: 150vw;
     background-color: v.$cream;
+    background-size: 100px 100px;
+    background-image: radial-gradient(
+        v.$lgray 5%,
+        transparent 10%
+    );
 
     > div {
         position: absolute;
@@ -57,11 +62,13 @@
         > div {
             width: 15%;
             margin-right: 10px;
+            font-size: 1.2rem;
         }
 
         input {
             width: 40%;
-            font-size: 1.3rem;   
+            font-size: 1.3rem;  
+            border-radius: 10px; 
         }
         
         button {
@@ -74,6 +81,38 @@
                 color: v.$white;
             }
         }
+    }
+
+    .form-error{
+        color: v.$red;
+        font-size: 1.3rem;
+        padding: 20px 0px;
+    }
+
+    .image-upload input {
+        display: none;
+    }    
+
+    .image-upload-label {
+        cursor: pointer;
+    }
+    
+    .image-upload-label p{
+        text-align: center;
+        font-weight: 400;
+        font-size: 1.3rem;
+        border: none;
+        border-radius: 10px;
+        color: v.$cream;
+        background-color: v.$dblack;
+        width: 150px;
+        padding: 5px 0px;
+        height: 35px;
+    }
+    
+    .image-upload-label p:hover {
+        background-color: v.$dgreen;
+        color: v.$white;
     }
 }
 
@@ -101,16 +140,24 @@
     > div {
         display: flex;
         flex-direction: column;
-        margin-left: 100px;
-        padding-top: 40px;
+        margin-left: 200px;
+        padding-top: 20px;
+        position: relative;
 
         > div {
             padding: 40px 0px;
             width: 60%;
 
+            img {
+                position: absolute;
+                left: -80px;
+                padding-top: 10px;
+            }
+
             h3 {
                 color: v.$lgreen;
                 font-size: 2.3rem;
+                line-height: 40px;
             }
 
             p {
