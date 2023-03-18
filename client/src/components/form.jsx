@@ -47,7 +47,6 @@ const Form = () => {
                         onChange={handleType}
                         required
                         defaultValue={{value: 'public', label: 'Public Key'}}
-
                         theme={(theme) => ({
                             ...theme,
                             borderRadius: 10,
