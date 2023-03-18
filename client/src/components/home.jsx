@@ -3,7 +3,7 @@ import Form from "./form";
 import scanBtn from '../assets/scan.png'
 import traceBtn from '../assets/trace.png'
 import walletBtn from '../assets/wallet.png'
-
+import bullBtn from '../assets/bull.png'
 
 const Home = () => {
     return (
@@ -11,6 +11,7 @@ const Home = () => {
             <div className="home-left">
 
                 <nav className="nav-left">
+                    <img src={bullBtn} alt="bull" /> 
                     <h1>Big Bulls</h1>
                     <div>
                         <button>Features</button>
@@ -19,8 +20,8 @@ const Home = () => {
                 </nav>
 
                 <div>
-                    <h1>Trace Crypto Transactions, <br></br>Easily.</h1>
-                    <p>Powerful investigation tool that takes in public or private keys in various formats and maps them to the cryptocurrency they belong to.</p>
+                    <h1>Trace <span className="highlight">Crypto</span> Transactions, <br></br><span className="highlight">Easily</span></h1>
+                    <p>Powerful investigation tool that takes in public or private keys in various formats and maps them to the cryptocurrency they belong to</p>
 
                     <div className="home-form">
                         <Form></Form>
