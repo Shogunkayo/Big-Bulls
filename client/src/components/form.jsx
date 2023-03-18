@@ -19,12 +19,13 @@ const Form = () => {
         e.preventDefault()
         if(inputType != 'image'){
             let request_body = {'type': inputType, 'key': usrInput}
-            console.log(request_body)
+            //console.log(request_body)
 
             fetch('http://localhost:5000/search', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(request_body)
+                body: JSON.stringify(request_body),
+                mode:'cors'
             }).then((response) => {
                 response.json().then((body) => {
                     console.log(body)
