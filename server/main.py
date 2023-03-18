@@ -1,3 +1,7 @@
+from Cryptodome.Hash import keccak, RIPEMD160
+import ecdsa
+import base58
+import hashlib
 from flask import Flask, request, jsonify
 import requests
 import json
@@ -99,6 +103,7 @@ def get_wallet_address_eth(pubaddr):
     a = '0x'+a
     return a
 
+
 def get_wallet_address_btc(publickey_c):
     bts = bytearray.fromhex(publickey_c)
     shahashed = hashlib.sha256(bts).hexdigest()
@@ -111,11 +116,13 @@ def get_wallet_address_btc(publickey_c):
     bt = base58.b58encode_check(bytearray.fromhex(ripehashed))
     return bt.decode()
 
+
 def get_wallet_address_doge(public_key_hex):
     public_key_bytes = bytes.fromhex(public_key_hex)
 
     # create an ecdsa VerifyingKey object from the public key bytes
-    vk = ecdsa.VerifyingKey.from_string(public_key_bytes, curve=ecdsa.SECP256k1)
+    vk = ecdsa.VerifyingKey.from_string(
+        public_key_bytes, curve=ecdsa.SECP256k1)
     print(vk)
     # get the compressed public key bytes
     compressed_public_key = vk.to_string("compressed")
@@ -185,9 +192,10 @@ def get_transactions_dash(key):
     if data4['transaction_count'] == 0:
         return 0
     return 1
+        return 0
+    return 1
 
 
-@app.route('/api/bitcoin/<string:key>', methods=['GET'])
 def get_transactions_btc(key):
 
     url = "https://api.blockchair.com/bitcoin/dashboards/address/"
@@ -199,10 +207,9 @@ def get_transactions_btc(key):
     data3 = data2[key]
     data4 = data3['address']
     if data4['transaction_count'] == 0:
-        return "invalid data"
-    return "valid"
+        return 0
+    return 1
 
-@app.route('/api/doge/<string:key>', methods=['GET'])
 def get_transactions_doge(key):
 
     url = "https://api.blockchair.com/dogecoin/dashboards/address/"
@@ -214,37 +221,66 @@ def get_transactions_doge(key):
     data3 = data2[key]
     data4 = data3['address']
     if data4['transaction_count'] == 0:
-        return "invalid data"
-    return "valid"
+        return 0
+    return 1
 
 
-@app.route('/api/btccash/<string:key>', methods=['GET'])
 def get_transaction_btccash(key):
-    url="https://api.blockchair.com/bitcoin-cash/dashboards/address/"
-    url=url+key
-    payload={'key':'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
-    res=requests.get(url,params=payload)
-    addr_data=res.json()
-    data2=addr_data['data']
-    data3=data2[key]
-    data4=data3['address']
-    if data4['transaction_count']==0:
-        return "invalid data"
-    return "valid"
+    url = "https://api.blockchair.com/bitcoin-cash/dashboards/address/"
+    url = url+key
+    payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
+    res = requests.get(url, params=payload)
+    addr_data = res.json()
+    data2 = addr_data['data']
+    data3 = data2[key]
+    data4 = data3['address']
+    if data4['transaction_count'] == 0:
+        return 0
+    return 1
 
-@app.route('/api/litecoin/<string:key>', methods=['GET'])
+
 def get_transaction_litecoin(key):
-    url="https://api.blockchair.com/litecoin/dashboards/address/"
-    url=url+key
-    payload={'key':'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
-    res=requests.get(url,params=payload)
-    addr_data=res.json()
-    data2=addr_data['data']
-    data3=data2[key]
-    data4=data3['address']
-    if data4['transaction_count']==0:
-        return "invalid data"
-    return "valid"
+    url = "https://api.blockchair.com/litecoin/dashboards/address/"
+    url = url+key
+    payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
+    res = requests.get(url, params=payload)
+    addr_data = res.json()
+    data2 = addr_data['data']
+    data3 = data2[key]
+    data4 = data3['address']
+    if data4['transaction_count'] == 0:
+        return 0
+    return 1
+
+
+
+def get_transaction_ethereum(key):
+    url = "https://api.blockchair.com/ethereum/dashboards/address/"
+    url = url+key
+    payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
+    res = requests.get(url, params=payload)
+    addr_data = res.json()
+    data2 = addr_data['data']
+    data3 = data2[key]
+    data4 = data3['address']
+    if data4['transaction_count'] == 0:
+        return 0
+    return 1
+
+
+
+def get_transaction_tether(key):
+    url = "https://api.blockchair.com/ethereum/erc-20/0xdac17f958d2ee523a2206206994597c13d831ec7/dashboards/address/"
+    url = url+key
+    payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
+    res = requests.get(url, params=payload)
+    addr_data = res.json()
+    data2 = addr_data['data']
+    data3 = data2[key]
+    data4 = data3['address']
+    if data4['transaction_count'] == 0:
+        return 0
+    return 1
 
 def validate_for_all1(address,type):
    btc = bitcoin(address,type)
@@ -260,9 +296,9 @@ def validate_for_all2(address,type):
    }
    return overall_data
 
-@app.route('/search',methods=['GET','POST'])
+@app.route('/search', methods=['GET', 'POST'])
 def search():
-    if request.method=="POST":
+    if request.method == "POST":
         data = request.get_json()
         if data['type']=='wallet':
            overall_data = validate_for_all1(data['key'],data['type'])
@@ -277,17 +313,19 @@ def search():
 
         
 
-        # someObj = {'name':get_wallet_address_ltc(compressed)}
+        # someObj = {'name': get_wallet_address_ltc(compressed)}
         # print(someObj)
         print(overall_data)
     return jsonify(overall_data)
 
-@app.route("/search-img",methods=['GET','POST'])
+
+@app.route("/search-img", methods=['GET', 'POST'])
 def search_img():
-    if request.method=="POST":
+    if request.method == "POST":
         data = request.files.get('image')
         print(data)
     return "Done"
+
 
 if __name__ == "__main__":
     app.run(debug=True)
