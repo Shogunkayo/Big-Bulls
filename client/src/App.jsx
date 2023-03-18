@@ -1,9 +1,10 @@
+import Home from "./components/home"
 
 function App() {
   
   return (
     <div className="App">
-        <h1 className="test">Hehehehaw</h1>
+        <Home></Home>
     </div>
   )
 }
