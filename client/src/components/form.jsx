@@ -5,8 +5,10 @@ const Form = () => {
 
     const [usrInput, setUsrInput] = useState('')
     const [inputType, setInputType] = useState('public')
+    const [inputTypeLabel, setInputTypeLabel] = useState('Public Key')
     const [image, setImage] = useState(null)
     const [isImage, setIsImage] = useState(true)
+    const [error, setError] = useState(false)
     
     const typeOptions = [
         {value: 'public', label: 'Public Key'},
@@ -16,6 +18,7 @@ const Form = () => {
     ] 
 
     const handleSubmit = e => {
+        setError(false)
         e.preventDefault()
         if(inputType != 'image'){
             let request_body = {'type': inputType, 'key': usrInput}
@@ -24,18 +27,33 @@ const Form = () => {
             fetch('http://localhost:5000/search', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(request_body)
+                body: JSON.stringify(request_body),
+                mode:'cors'
             }).then((response) => {
                 response.json().then((body) => {
                     console.log(body)
                 })
             }) 
         }
+        else if(inputType == 'image'){
+            if(!image){
+                setError(true)
+            }
+
+            const formData = new FormData();
+            formData.append('image', image);
+
+            fetch('http://localhost:5000/search-img', {
+                method: 'POST',
+                body: formData,
+                mode: 'cors'
+            })
+        }
     }
 
     const handleType = selectedOption => {
         setInputType(selectedOption.value)
-        console.log(selectedOption.value)
+        setInputTypeLabel(selectedOption.label)
     }
 
     return (
@@ -50,6 +68,7 @@ const Form = () => {
                         theme={(theme) => ({
                             ...theme,
                             borderRadius: 10,
+                            
                             colors: {
                               ...theme.colors,
                               primary25: '#94C595',
@@ -70,30 +89,36 @@ const Form = () => {
                 )}
 
                 {inputType == 'image' && (
-                    <label className='image-upload-label'>
-                    <p>Select Image</p>
-                    <input 
-                        className='event_img'
-                        name='event_img'
-                        type='file'
-                        onChange = {(e)=>{
-                            if(e.target.files[0] && (e.target.files[0].type === 'image/png' || e.target.files[0].type === 'image/jpeg')){
-                                setImage(e.target.files[0]);
-                                setIsImage(true);
-                            }
-                            else{
-                                setImage(null);
-                            }
-                        }}
-                        accept= 'image/png, image/jpeg'
-                    ></input>
-                    </label>
+                    <div className='image-upload'>
+                        <label className='image-upload-label'>
+                        <p>Select Image</p>
+                        <input 
+                            className='input_img'
+                            name='input_img'
+                            type='file'
+                            onChange = {(e)=>{
+                                if(e.target.files[0] && (e.target.files[0].type === 'image/png' || e.target.files[0].type === 'image/jpeg')){
+                                    setImage(e.target.files[0]);
+                                    setIsImage(true);
+                                }
+                                else{
+                                    setImage(null);
+                                }
+                            }}
+                            accept= 'image/png, image/jpeg'
+                        ></input>
+                        </label>
+                    </div>
                 )}
 
                 <button
                     type="submit"
                 >Submit</button>
             </form>
+
+            {error && (<div className="form-error">
+                <h3>The entered input is not a valid {inputTypeLabel}!</h3>
+            </div>)}
         </div>
     );
 }
