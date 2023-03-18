@@ -189,7 +189,7 @@ def get_wallet_address_dash(public_key):
 
     # Step 6: Encode the concatenated bytes with Base58Check encoding
     address = base58.b58encode(address_bytes).decode()
-    print(str(address))
+    print(str(address)+" ---> Dash")
     return str(address)
 
 
@@ -214,6 +214,7 @@ def get_transactions_btc(key):
     payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
     res = requests.get(url, params=payload)
     addr_data = res.json()
+    print(addr_data)
     data2 = addr_data['data']
     data3 = data2[key]
     data4 = data3['address']
@@ -293,13 +294,23 @@ def get_transaction_tether(key):
     return 1
 
 def validate_for_all1(address,type):
-   btc = bitcoin(address,type)
-   eth = ethereum(address,type)
-   doge = dogecoin(address,type)
-   ltc = litecoin(address,type)
-   thr = get_transaction_tether(address)
-   dsh = dash(address,type)
-   mon = monero(address,type)
+   mon = monero(address)
+   if(mon==0):
+    btc = bitcoin(address,type)
+    eth = ethereum(address,type)
+    doge = dogecoin(address,type)
+    ltc = litecoin(address,type)
+    if(eth==1): thr = get_transaction_tether(address)
+    else: thr = 0 
+    dsh = dash(address,type)
+   else:
+      btc = 0
+      eth = 0
+      doge = 0
+      ltc = 0
+      thr = 0
+      dsh = 0
+   
    overall_data = {
       'bitcoin':btc,
       'ethereum':eth,
