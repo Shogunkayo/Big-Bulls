@@ -2,6 +2,7 @@ const express = require("express")
 const cors = require("cors")
 const EthCrypto = require("eth-crypto")
 const crypto = require("crypto")
+const base58check= require("base58check")
 
 
 const app = express()
@@ -24,6 +25,25 @@ app.get("/publicKey/:publicKey",(req,res)=>{
 
 app.get("/privateKey/:privateKey",(req,res)=>{
     var privateKey = req.params.privateKey
+    var is_wif = 0;
+    if (privateKey[0] == '5' && privateKey.length == 51) {
+        is_wif = 1;
+        
+        
+    } else if ((privateKey[0] == 'L' || privateKey[0] == 'K') && privateKey.length == 52) {
+        is_wif= 2;
+        
+    }
+    console.log(is_wif);
+
+    if (is_wif == 1 || is_wif == 2) {
+
+    privateKey = base58check.decode(privateKey,'hex');
+    privateKey = privateKey['data'];
+    } 
+
+    console.log(privateKey)
+
     const publicKey = EthCrypto.publicKeyByPrivateKey(privateKey);
     const address = EthCrypto.publicKey.toAddress(publicKey);
     const compressed = EthCrypto.publicKey.compress(publicKey);
