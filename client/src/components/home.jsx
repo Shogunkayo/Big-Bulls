@@ -5,6 +5,8 @@ import traceBtn from '../assets/trace.png'
 import walletBtn from '../assets/wallet.png'
 import bullBtn from '../assets/bull.png'
 
+let colors = ['#94C595', '#191716']
+
 const Home = () => {
     return (
         <div className="home-container">
@@ -13,10 +15,6 @@ const Home = () => {
                 <nav className="nav-left">
                     <img src={bullBtn} alt="bull" /> 
                     <h1>Big Bulls</h1>
-                    <div>
-                        <button>Features</button>
-                        <button>Pricing</button>
-                    </div>
                 </nav>
 
                 <div>
@@ -24,7 +22,7 @@ const Home = () => {
                     <p>Powerful investigation tool that takes in public or private keys in various formats and maps them to the cryptocurrency they belong to</p>
 
                     <div className="home-form">
-                        <Form></Form>
+                        <Form colors={colors}></Form>
                     </div>
                 </div>
             </div>
@@ -32,6 +30,7 @@ const Home = () => {
             <div className="home-right">
                 <nav className="nav-right">
                     <div>
+                        <button>Features</button>
                         <button>Login</button>
                         <button>Sign Up</button>
                     </div>
