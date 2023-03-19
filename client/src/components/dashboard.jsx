@@ -5,18 +5,18 @@ import Fraud from './fraud';
 import Transactions from './transactions';
 import Wallet from './wallet';
 
-const Dashboard = ({input, handleInputData}) => {
+const Dashboard = () => {
 
     const [display, setDisplay] = useState(0)
 
     const {data} = useSelector(state => state.data)
 
     const wallet = {
-        'wallet': data.wallet,
-        'currencies': data.currencies,
+        'wallet': data.inputData.wallet,
+        'currencies': data.inputData.currencies,
     }
 
-    const transactions = data.transactions
+    const transactions = data.inputData.transactions
 
     return (
         <div className="dashboard-container">
