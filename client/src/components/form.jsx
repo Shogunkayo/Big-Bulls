@@ -3,7 +3,7 @@ import { useState } from "react"
 import Select from 'react-select'
 import ProgressBar from "./progressBar"
 
-const Form = () => {
+const Form = ({colors}) => {
 
     const [usrInput, setUsrInput] = useState('')
     const [inputType, setInputType] = useState('public')
@@ -112,8 +112,8 @@ const Form = () => {
                             
                             colors: {
                               ...theme.colors,
-                              primary25: '#94C595',
-                              primary: 'black',
+                              primary25: colors[0],
+                              primary: colors[1],
                             },
                           })}
                     
@@ -143,8 +143,8 @@ const Form = () => {
                                 
                                 colors: {
                                 ...theme.colors,
-                                primary25: '#94C595',
-                                primary: 'black',
+                                primary25: colors[0],
+                                primary: colors[1],
                                 },
                             })}
                         
