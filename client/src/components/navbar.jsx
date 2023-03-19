@@ -10,7 +10,7 @@ const Navbar = () => {
                 <img src={bullBtn} alt="bull"/>
             </div>
             <div className='nav-form'>
-                <Form colors={colors}></Form>
+                <Form colors={colors} ></Form>
             </div>
         </div>
     );

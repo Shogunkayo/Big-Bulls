@@ -1,5 +1,4 @@
 import Form from "./form";
-
 import scanBtn from '../assets/scan.png'
 import traceBtn from '../assets/trace.png'
 import walletBtn from '../assets/wallet.png'
