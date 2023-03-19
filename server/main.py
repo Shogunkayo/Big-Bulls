@@ -13,6 +13,13 @@ CORS(app)
 ## Functions for detecting right wallet address
 
 def bitcoin(wal_address,type):
+  btc = {
+       'name':"Bitcoin",
+       'valid':0,
+       'wal_addr':wal_address,
+       'transactions_num':0,
+       'transactions':[]
+    }
   if(type=='wallet'):
     l = len(wal_address)
     check = 0
@@ -23,25 +30,39 @@ def bitcoin(wal_address,type):
     if(check==2):
         return get_transactions_btc(wal_address)
     else:
-       return 0
+       return btc
        
   else:
      wal_address = get_wallet_address_btc(wal_address)
      return get_transactions_btc(wal_address)
 
 def ethereum(wal_address,type):
+  btc = {
+       'name':"Ethereum",
+       'valid':0,
+       'wal_addr':wal_address,
+       'transactions_num':0,
+       'transactions':[]
+    }
   if(type=='wallet'):
     l = len(wal_address)
     if(len(wal_address)==42 and '0x' in wal_address):
         return get_transaction_ethereum(wal_address)
     else:
-        return 0
+        return btc
   else:
      wal_address = get_wallet_address_eth(wal_address)
      return get_transaction_ethereum(wal_address)
     
 
 def monero(wal_address):
+  btc = {
+       'name':"Monero",
+       'valid':0,
+       'wal_addr':wal_address,
+       'transactions_num':0,
+       'transactions':[]
+    }
   l = len(wal_address)
   check = 0
   if(l>=76 and l<=95):
@@ -49,39 +70,61 @@ def monero(wal_address):
   if wal_address.startswith('4'):
     check=check+1
   if check==2:
-    return 1
+    btc['valid'] = 1
+    return btc
   else:
-    return 0
+    return btc
   
 def dash(wal_address,type):
+  btc = {
+       'name':"Dash",
+       'valid':0,
+       'wal_addr':wal_address,
+       'transactions_num':0,
+       'transactions':[]
+    }
   if(type=='wallet'):
     l = len(wal_address)
     if(l==34 and wal_address.startswith('X')):
         return get_transactions_dash(wal_address)
     else:
-        return 0
+        return btc
   else:
      wal_address = get_wallet_address_dash(wal_address)
      return get_transactions_dash(wal_address)
   
 def dogecoin(wal_address,type):
+  btc = {
+       'name':"Dogecoin",
+       'valid':0,
+       'wal_addr':wal_address,
+       'transactions_num':0,
+       'transactions':[]
+    }
   if(type=='wallet'):
     l = len(wal_address)
     if(l==34 and wal_address.startswith('D')):
         return get_transactions_doge(wal_address)
     else:
-        return 0
+        return btc
   else:
      wal_address = get_wallet_address_doge(wal_address)
      return get_transactions_doge(wal_address)
   
 def litecoin(wal_address,type):
+  btc = {
+       'name':"Litecoin",
+       'valid':0,
+       'wal_addr':wal_address,
+       'transactions_num':0,
+       'transactions':[]
+    }
   if(type=='wallet'):
     l = len(wal_address)
     if(l==34 and (wal_address.startswith('L') or wal_address.startswith('M'))):
         return get_transaction_litecoin(wal_address)
     else:
-        return 0
+        return btc
   else:
      wal_address = get_wallet_address_ltc(wal_address)
      return get_transaction_litecoin(wal_address)
@@ -194,8 +237,15 @@ def get_wallet_address_dash(public_key):
 
 
 def get_transactions_dash(key):
+    btc = {
+       'name':"Dash",
+       'valid':0,
+       'wal_addr':key,
+       'transactions_num':0,
+       'transactions':[]
+    }
     url = "https://api.blockchair.com/dash/dashboards/address/"
-    url = url + key
+    url = url + key + "?limit=5"
     payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
     res = requests.get(url, params=payload)
     addr_data = res.json()
@@ -203,14 +253,24 @@ def get_transactions_dash(key):
     data3 = data2[key]
     data4 = data3['address']
     if data4['transaction_count'] == 0:
-        return 0
-    return 1
+        return btc
+    btc['valid'] = 1
+    btc['wal_addr'] = key
+    btc['transactions_num'] = data4['transaction_count']
+    btc['transactions'] = data3['transactions']
+    return btc
 
 
 def get_transactions_btc(key):
-
+    btc = {
+       'name':"Bitcoin",
+       'valid':0,
+       'wal_addr':key,
+       'transactions_num':0,
+       'transactions':[]
+    }
     url = "https://api.blockchair.com/bitcoin/dashboards/address/"
-    url = url + key
+    url = url + key + "?limit=5"
     payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
     res = requests.get(url, params=payload)
     addr_data = res.json()
@@ -219,12 +279,23 @@ def get_transactions_btc(key):
     data3 = data2[key]
     data4 = data3['address']
     if data4['transaction_count'] == 0:
-        return 0
-    return 1
+        return btc
+    btc['valid'] = 1
+    btc['wal_addr'] = key
+    btc['transactions_num'] = data4['transaction_count']
+    btc['transactions'] = data3['transactions']
+    return btc
 
 def get_transactions_doge(key):
+    btc = {
+       'name':"Dogecoin",
+       'valid':0,
+       'wal_addr':key,
+       'transactions_num':0,
+       'transactions':[]
+    }
     url = "https://api.blockchair.com/dogecoin/dashboards/address/"
-    url = url + key
+    url = url + key + "?limit=5"
     payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
     res = requests.get(url, params=payload)
     addr_data = res.json()
@@ -232,27 +303,24 @@ def get_transactions_doge(key):
     data3 = data2[key]
     data4 = data3['address']
     if data4['transaction_count'] == 0:
-        return 0
-    return 1
-
-
-def get_transaction_btccash(key):
-    url = "https://api.blockchair.com/bitcoin-cash/dashboards/address/"
-    url = url+key
-    payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
-    res = requests.get(url, params=payload)
-    addr_data = res.json()
-    data2 = addr_data['data']
-    data3 = data2[key]
-    data4 = data3['address']
-    if data4['transaction_count'] == 0:
-        return 0
-    return 1
+        return btc
+    btc['valid'] = 1
+    btc['wal_addr'] = key
+    btc['transactions_num'] = data4['transaction_count']
+    btc['transactions'] = data3['transactions']
+    return btc
 
 
 def get_transaction_litecoin(key):
+    btc = {
+       'name':"Litecoin",
+       'valid':0,
+       'wal_addr':key,
+       'transactions_num':0,
+       'transactions':[]
+    }
     url = "https://api.blockchair.com/litecoin/dashboards/address/"
-    url = url+key
+    url = url+key + "?limit=5"
     payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
     res = requests.get(url, params=payload)
     addr_data = res.json()
@@ -260,14 +328,25 @@ def get_transaction_litecoin(key):
     data3 = data2[key]
     data4 = data3['address']
     if data4['transaction_count'] == 0:
-        return 0
-    return 1
+        return btc
+    btc['valid'] = 1
+    btc['wal_addr'] = key
+    btc['transactions_num'] = data4['transaction_count']
+    btc['transactions'] = data3['transactions']
+    return btc
 
 
 
 def get_transaction_ethereum(key):
+    btc = {
+       'name':"Ethereum",
+       'valid':0,
+       'wal_addr':key,
+       'transactions_num':0,
+       'transactions':[]
+    }
     url = "https://api.blockchair.com/ethereum/dashboards/address/"
-    url = url+key
+    url = url+key + "?limit=5"
     payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
     res = requests.get(url, params=payload)
     addr_data = res.json()
@@ -275,14 +354,28 @@ def get_transaction_ethereum(key):
     data3 = data2[key]
     data4 = data3['address']
     if data4['transaction_count'] == 0:
-        return 0
-    return 1
+        return btc
+    btc['valid'] = 1
+    btc['wal_addr'] = key
+    btc['transactions_num'] = data4['transaction_count']
+    print("\n\n")
+    print(addr_data)
+    print("\n\n")
+    btc['transactions'] = data3['calls']
+    return btc
 
 
 
 def get_transaction_tether(key):
+    btc = {
+       'name':"Tether",
+       'valid':0,
+       'wal_addr':key,
+       'transactions_num':0,
+       'transactions':[]
+    }
     url = "https://api.blockchair.com/ethereum/erc-20/0xdac17f958d2ee523a2206206994597c13d831ec7/dashboards/address/"
-    url = url+key
+    url = url+key + "?limit=5"
     payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
     res = requests.get(url, params=payload)
     addr_data = res.json()
@@ -290,10 +383,20 @@ def get_transaction_tether(key):
     data3 = data2[key]
     data4 = data3['address']
     if data4['transaction_count'] == 0:
-        return 0
-    return 1
+        return btc
+    btc['valid'] = 1
+    btc['wal_addr'] = key
+    btc['transactions_num'] = data4['transaction_count']
+    btc['transactions'] = data3['transactions']
+    return btc
 
 def validate_for_all1(address,type):
+   invalid = {
+       'valid':0,
+       'wal_addr':"",
+       'transactions_num':0,
+       'transactions':[]
+    }
    mon = monero(address)
    if(mon==0):
     btc = bitcoin(address,type)
@@ -304,39 +407,43 @@ def validate_for_all1(address,type):
     else: thr = 0 
     dsh = dash(address,type)
    else:
-      btc = 0
-      eth = 0
-      doge = 0
-      ltc = 0
-      thr = 0
-      dsh = 0
+      btc = invalid
+      eth = invalid
+      doge = invalid
+      ltc = invalid
+      thr = invalid
+      dsh = invalid
    
-   overall_data = {
-      'bitcoin':btc,
-      'ethereum':eth,
-      'dogecoin':doge,
-      'litecoin':ltc,
-      'tether':thr,
-      'dash':dsh,
-      'monero':mon
-   }
+   currencies = []
+
+   validate = [btc, eth, doge, ltc, thr, dsh, mon]
+   for i in validate:
+      if i['valid']==1:
+         currencies.append(i)
+   overall_data = {'wallet':currencies}
    return overall_data
 
 def validate_for_all2(address,type):
+   invalid = {
+       'valid':0,
+       'wal_addr':"",
+       'transactions_num':0,
+       'transactions':[]
+    }
+   thr = invalid
+   mon = invalid
    btc = bitcoin(address['Compressed'],type)
    eth = ethereum(address['Uncompressed'],type)
    doge = dogecoin(address['Uncompressed'],type)
    ltc = litecoin(address['Uncompressed'],type)
    dsh = dash(address['Compressed'],type)
-   overall_data = {
-      'bitcoin':btc,
-      'ethereum':eth,
-      'dogecoin':doge,
-      'litecoin':ltc,
-      'tether':0,
-      'dash':dsh,
-      'monero':0
-   }
+   currencies = []
+
+   validate = [btc, eth, doge, ltc, thr, dsh, mon]
+   for i in validate:
+      if i['valid']==1:
+         currencies.append(i)
+   overall_data = {'wallet':currencies}
    return overall_data
 
 @app.route('/search', methods=['GET', 'POST'])
