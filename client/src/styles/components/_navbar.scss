@@ -35,8 +35,6 @@
             width: 50%;
             font-size: 1.3rem;  
             border-radius: 10px;
-            background-color: v.$dgray;
-            color: v.$white;
             &:focus {
                 outline: none;
             }
@@ -84,11 +82,11 @@
         color: v.$lgreen;
         width: 150px;
         padding: 4px 0px;
-        height: 35px;
+        height: 39px;
     }
     
     .image-upload-label p:hover {
-        background-color: v.$dpurple;
+        background-color: v.$dgreen;
         color: v.$white;
     }
 }

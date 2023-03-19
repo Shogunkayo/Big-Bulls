@@ -7,7 +7,7 @@ import moneroBtn from '../assets/monero.png'
 import tetherBtn from '../assets/tether.png'
 import Transactions from './transactions'
 
-const Wallet = ({wallet, handleDisplay, handleTransactions}) => {
+const Wallet = ({wallet, handleDisplay, handleTransactions, handleFraudData}) => {
 
     const coinIcons = {
         'Bitcoin': bitcoinBtn,
@@ -52,7 +52,16 @@ const Wallet = ({wallet, handleDisplay, handleTransactions}) => {
     }
 
     const handleFraud = () => {
-
+        console.log('Ran')
+        fetch(`https://www.bitcoinabuse.com/api/reports/check?address=${wallet.wallet[0]}&api_token=dRbnpJJYkjr7xnsJsMEnDs0KQ1AzC94Z57WqPE3a`,{
+            method: 'GET'
+        }).then((response) => {
+            response.json().then((body) => {
+                console.log(body)
+                handleFraudData(body)
+                handleDisplay(2)
+            })
+        })
     }
 
     return (
@@ -81,7 +90,7 @@ const Wallet = ({wallet, handleDisplay, handleTransactions}) => {
             
             <div className='wallet-nav'>
                 <button className='wallet-nav-btn' onClick={() => {handleDisplay(0)}}>Transactions</button>
-                <button className='wallet-nav-btn' onClick={() => {handleDisplay(2)}}>Fraud Analysis</button>
+                <button className='wallet-nav-btn' onClick={handleFraud}>Fraud Analysis</button>
             </div>
 
         </div>

@@ -1,0 +1,63 @@
+@use '../variables' as v;
+
+.fraud-container {
+    background-color: v.$lblack;
+    border-radius: 40px;
+    margin-top: 30px;
+    width: 65%;
+    height: 800px;
+    color: v.$lgray;
+    
+    > div {
+        padding-top: 20px;
+    }
+
+    > div:first-child{
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    h3 { 
+        font-size: 1.6rem;
+    }
+
+    h4 {
+        font-size: 1.3rem;
+    }
+
+    .frauds {
+        padding: 20px;
+        height: 600px;
+        overflow-y: scroll;
+
+        .fraud {
+            padding: 10px 0px;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #d2dbd92e;
+
+            p{
+                padding: 10px 0px;
+            }
+        }
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        &::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px grey;
+            border-radius: 10px;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background: v.$dgreen;
+            border-radius: 10px;
+        }
+        
+    }
+}
+
+.highlight {
+    color: v.$dgreen;
+}

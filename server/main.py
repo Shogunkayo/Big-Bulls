@@ -422,6 +422,7 @@ def validate_for_all1(address,type):
    currencies = []
 
    validate = [btc, eth, doge, ltc, thr, dsh, mon]
+   print(validate)
    for i in range(len(validate)):
       if validate[i]['valid']==1:
          currencies.append(validate[i])
