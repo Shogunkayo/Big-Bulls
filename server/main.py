@@ -38,7 +38,7 @@ def ethereum(wal_address,type):
         return 0
   else:
      wal_address = get_wallet_address_eth(wal_address)
-     return get_transactions_btc(wal_address)
+     return get_transaction_ethereum(wal_address)
     
 
 def monero(wal_address):
@@ -53,12 +53,16 @@ def monero(wal_address):
   else:
     return 0
   
-def dash(wal_address):
-  l = len(wal_address)
-  if(l==34 and wal_address.startswith('X')):
-    return 1
+def dash(wal_address,type):
+  if(type=='wallet'):
+    l = len(wal_address)
+    if(l==34 and wal_address.startswith('X')):
+        return get_transactions_dash(wal_address)
+    else:
+        return 0
   else:
-    return 0
+     wal_address = get_wallet_address_dash(wal_address)
+     return get_transactions_dash(wal_address)
   
 def dogecoin(wal_address,type):
   if(type=='wallet'):
@@ -86,11 +90,12 @@ def litecoin(wal_address,type):
 
 def get_wallet_address_eth(pubaddr):
     kins = keccak.new(digest_bits=256)
+    print(pubaddr+" --> Here")
     a = bytearray.fromhex(pubaddr)
     kins.update(a)
     a = kins.hexdigest()[-40:]
-    a = '0x'+a
-    return a
+    a = '0x'+str(a)
+    return str(a)
 
 
 def get_wallet_address_btc(publickey_c):
@@ -101,12 +106,12 @@ def get_wallet_address_btc(publickey_c):
     rins.update(rmd)
     ripehashed = rins.hexdigest()
     ripehashed = "00"+ripehashed
-    base58.b58
     bt = base58.b58encode_check(bytearray.fromhex(ripehashed))
     return bt.decode()
 
 
 def get_wallet_address_doge(public_key_hex):
+    print(type(public_key_hex),public_key_hex+" --> Here")
     public_key_bytes = bytes.fromhex(public_key_hex)
 
     # create an ecdsa VerifyingKey object from the public key bytes
@@ -139,7 +144,6 @@ def get_wallet_address_doge(public_key_hex):
 def get_wallet_address_ltc(public_key):
     # add the prefix byte 0x30 to indicate Litecoin's main network
     prefix_public_key = b'\x30' + bytes(str(public_key).encode('utf-8'))
-    print(b'\x30' + b'032c5e2e5b5a27271154d1f537b3847722b104bc642b304d78e13c9c1eb3f98f7b')
 
     # perform SHA-256 hash on the public key
     sha256_1 = hashlib.sha256(prefix_public_key).digest()
@@ -168,6 +172,26 @@ def get_wallet_address_ltc(public_key):
     address_string = base58.b58encode(address_bytes)
     return str(address_string.decode())
 
+def get_wallet_address_dash(public_key):
+    sha256_hash = hashlib.sha256(bytes.fromhex(public_key)).digest()
+
+    # Step 2: Hash the SHA-256 hash with RIPEMD-160
+    ripemd160_hash = hashlib.new('ripemd160', sha256_hash).digest()
+
+    # Step 3: Add version byte (0x4C for mainnet)
+    version_hash = b'\x4C' + ripemd160_hash
+
+    # Step 4: Hash the version byte + RIPEMD-160 hash twice with SHA-256
+    checksum = hashlib.sha256(hashlib.sha256(version_hash).digest()).digest()[:4]
+
+    # Step 5: Concatenate the version byte + RIPEMD-160 hash + checksum
+    address_bytes = version_hash + checksum
+
+    # Step 6: Encode the concatenated bytes with Base58Check encoding
+    address = base58.b58encode(address_bytes).decode()
+    print(str(address)+" ---> Dash")
+    return str(address)
+
 
 def get_transactions_dash(key):
     url = "https://api.blockchair.com/dash/dashboards/address/"
@@ -190,6 +214,7 @@ def get_transactions_btc(key):
     payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
     res = requests.get(url, params=payload)
     addr_data = res.json()
+    print(addr_data)
     data2 = addr_data['data']
     data3 = data2[key]
     data4 = data3['address']
@@ -269,15 +294,31 @@ def get_transaction_tether(key):
     return 1
 
 def validate_for_all1(address,type):
-   btc = bitcoin(address,type)
-   eth = ethereum(address,type)
-   doge = dogecoin(address,type)
-   ltc = litecoin(address,type)
+   mon = monero(address)
+   if(mon==0):
+    btc = bitcoin(address,type)
+    eth = ethereum(address,type)
+    doge = dogecoin(address,type)
+    ltc = litecoin(address,type)
+    if(eth==1): thr = get_transaction_tether(address)
+    else: thr = 0 
+    dsh = dash(address,type)
+   else:
+      btc = 0
+      eth = 0
+      doge = 0
+      ltc = 0
+      thr = 0
+      dsh = 0
+   
    overall_data = {
       'bitcoin':btc,
       'ethereum':eth,
       'dogecoin':doge,
-      'litecoin':ltc
+      'litecoin':ltc,
+      'tether':thr,
+      'dash':dsh,
+      'monero':mon
    }
    return overall_data
 
@@ -286,11 +327,15 @@ def validate_for_all2(address,type):
    eth = ethereum(address['Uncompressed'],type)
    doge = dogecoin(address['Uncompressed'],type)
    ltc = litecoin(address['Uncompressed'],type)
+   dsh = dash(address['Compressed'],type)
    overall_data = {
       'bitcoin':btc,
       'ethereum':eth,
       'dogecoin':doge,
-      'litecoin':ltc
+      'litecoin':ltc,
+      'tether':0,
+      'dash':dsh,
+      'monero':0
    }
    return overall_data
 
@@ -300,19 +345,18 @@ def search():
         data = request.get_json()
         if data['type']=='wallet':
            overall_data = validate_for_all1(data['key'],data['type'])
-        else:
-            url = "http://localhost:8081/uncompress/"+data['key']
+        elif data['type']=='public':
+            url = "http://localhost:8081/publicKey/"+data['key']
             res = requests.get(url)
             resObj = json.loads(res.text)
-            print(resObj)
             overall_data = validate_for_all2(resObj,data['type'])
-        # uncompressed = resObj['Uncompressed']
-        # compressed = resObj['Compressed']
-
-        
-
-        # someObj = {'name': get_wallet_address_ltc(compressed)}
-        # print(someObj)
+        elif data['type']=='private':
+            url = "http://localhost:8081/privateKey/"+data['key']
+            res = requests.get(url)
+            resObj = json.loads(res.text)
+            overall_data = validate_for_all2(resObj,data['type'])
+        else:
+           overall_data = data
         print(overall_data)
     return jsonify(overall_data)
 

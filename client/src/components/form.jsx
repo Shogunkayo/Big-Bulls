@@ -180,7 +180,7 @@ const Form = ({colors}) => {
                 <h3>The entered input is not a valid {inputTypeLabel}!</h3>
             </div>)}
 
-            <h3>{output}</h3>
+            <h3>{JSON.stringify(output)}</h3>
                 
         </div>
     );
