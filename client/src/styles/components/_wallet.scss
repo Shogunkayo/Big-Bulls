@@ -1,0 +1,63 @@
+@use '../variables' as v;
+
+.wallet-container {
+    background-color: v.$lblack;
+    display: flex;
+    flex-direction: column;
+    border-radius: 40px;
+    width: 25%;
+    margin-left: 20px;
+    margin-top: 30px;
+    > div {
+        padding: 30px 30px;
+
+        h3 {
+           justify-content: center;
+           color: v.$dgreen;
+           font-size: 2.2rem;
+           text-align: center;
+        }
+
+        h4 {
+            color: v.$white;
+            font-size: 1.3rem;
+            word-wrap: break-word;
+        }
+
+        .currencies {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            height: 400px;
+
+            .currency {
+                display: flex;
+                padding: 30px 20px;
+
+                h4 {
+                    padding-left: 5px;
+                    padding-top: 20px;
+                }
+            }
+        }
+    }
+
+    .wallet-nav {
+        display: flex;
+        justify-content: space-evenly;
+        position: relative;
+        bottom: 40px;
+        button {
+            padding: 15px;
+            font-size: 1.5rem;
+            color: v.$lgreen;
+            background-color: v.$dgray;
+            &:hover{
+                background-color: v.$dgreen;
+                color: v.$white;
+            }
+        }
+    }
+}
+
+

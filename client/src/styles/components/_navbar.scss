@@ -1,1 +1,94 @@
 @use '../variables' as v;
+
+.nav-container{
+    margin: 0 auto;
+    background-color: v.$lblack;
+    display: flex;
+    width: 60%;
+    justify-content: space-between;
+    border-radius: 40px;
+
+    img {
+        padding-left: 100px;
+        padding-top: 7px;
+        width: 96px;
+        height: 96px;
+    }
+
+    .nav-form{
+        width: 100%;
+        padding-left: 100px;
+        padding-top: 30px;
+    }
+
+    form{
+        display: flex;
+
+        > div {
+            width: 25%;
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        input {
+            border: none;
+            width: 50%;
+            font-size: 1.3rem;  
+            border-radius: 10px;
+            background-color: v.$dgray;
+            color: v.$white;
+            &:focus {
+                outline: none;
+            }
+        }
+        
+        button {
+            color: v.$lgreen;
+            background-color: v.$dgray;
+            margin: 0px 10px;
+            padding: 10px;
+            &:hover{
+                background-color: v.$dgreen;
+                color: v.$white;
+            }
+        }
+
+        .form-image {
+            display: flex;
+            justify-content: space-between;
+            width: 310px;
+        }
+    }
+
+    .form-error{
+        color: v.$red;
+        font-size: 1.3rem;
+        padding: 20px 0px;
+    }
+
+    .image-upload input {
+        display: none;
+    }    
+
+    .image-upload-label {
+        cursor: pointer;
+    }
+    
+    .image-upload-label p{
+        text-align: center;
+        font-weight: 400;
+        font-size: 1.3rem;
+        border: none;
+        border-radius: 10px;
+        background-color: v.$dgray;
+        color: v.$lgreen;
+        width: 150px;
+        padding: 4px 0px;
+        height: 35px;
+    }
+    
+    .image-upload-label p:hover {
+        background-color: v.$dpurple;
+        color: v.$white;
+    }
+}

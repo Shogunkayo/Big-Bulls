@@ -2,5 +2,20 @@
 
 .dashboard-container {
     background-color: v.$dblack;
+    background-size: 100px 100px;
+    background-image: radial-gradient(
+        v.$dpurple 5%,
+        transparent 10%
+    );
+
     height: 100vh;
+
+    > div {
+        padding-top: 20px;
+    }
+
+    .dashboard-content {
+        display: flex;
+        justify-content: space-evenly;
+    }
 }

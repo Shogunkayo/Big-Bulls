@@ -2,8 +2,15 @@ import { useEffect } from "react"
 import { useState } from "react"
 import Select from 'react-select'
 import ProgressBar from "./progressBar"
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
+import { setData } from "../redux/inputSlice";
 
-const Form = () => {
+const Form = ({colors}) => {
+
+    const navigate = useNavigate()
+    const {data} = useSelector(state => state.data)
+    const dispatch = useDispatch()
 
     const [usrInput, setUsrInput] = useState('')
     const [inputType, setInputType] = useState('public')
@@ -12,7 +19,6 @@ const Form = () => {
     const [imageType, setImageType] = useState('qr')
     const [submitted, setSubmitted] = useState(false)
     const [progress, setProgress] = useState({})
-    const [output, setOutput] = useState('')
     const [error, setError] = useState(false)
     
     const typeOptions = [
@@ -50,8 +56,9 @@ const Form = () => {
         }).then((response) => {
             setSubmitted(progressOptions[3])
             response.json().then((body) => {
-                setOutput(body)
+                dispatch(setData(body))
                 setSubmitted({})
+                navigate('/dashboard')
             })
         }) 
     }
@@ -83,9 +90,9 @@ const Form = () => {
                 }).then((response) => {
                     setSubmitted(progressOptions[3])
                     response.json().then((body) => {
-                        console.log(body)
-                        setOutput(body)
+                        dispatch(setData(body))
                         setSubmitted({})
+                        navigate('/explore')
                     })
                 }) 
             })
@@ -112,8 +119,8 @@ const Form = () => {
                             
                             colors: {
                               ...theme.colors,
-                              primary25: '#94C595',
-                              primary: 'black',
+                              primary25: colors[0],
+                              primary: colors[1],
                             },
                           })}
                     
@@ -143,8 +150,8 @@ const Form = () => {
                                 
                                 colors: {
                                 ...theme.colors,
-                                primary25: '#94C595',
-                                primary: 'black',
+                                primary25: colors[0],
+                                primary: colors[1],
                                 },
                             })}
                         
@@ -178,10 +185,7 @@ const Form = () => {
 
             {error && (<div className="form-error">
                 <h3>The entered input is not a valid {inputTypeLabel}!</h3>
-            </div>)}
-
-            <h3>{JSON.stringify(output)}</h3>
-                
+            </div>)}                
         </div>
     );
 }
