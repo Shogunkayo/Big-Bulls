@@ -473,6 +473,37 @@ def search():
         print(overall_data)
     return jsonify(overall_data)
 
+@app.route("/get-transaction",methods=['GET','POST'])
+def return_transaction_details():
+   if request.method == "POST":
+        data = request.get_json()
+        url = "https://api.blockchair.com/"+data['currency'].lower()+"/dashboards/transactions/"
+        for i in range(len(data['hashes'])):
+           url = url + data['hashes'][i]
+           if i!=len(data['hashes'])-1: url = url + ","
+        print(url)
+        payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
+        res = requests.get(url, params=payload)
+        resObj = res.json()
+        data2 = resObj['data']
+        returnLst = []
+        for j in data['hashes']:
+            data3 = data2[j]
+            data4 = data3['outputs'][0]
+            tempObj = {
+               "hash":data4['transaction_hash'],
+               "trans_id":data4['transaction_id'],
+               "recipient":data4['recipient'],
+               "time":data4['time'],
+               "value":data4['value'],
+               "value_usd":data4['value_usd']
+            }
+            returnLst.append(tempObj)
+        returnObj = {
+           "transactions":returnLst
+        }
+        print(returnObj)
+   return jsonify(returnObj)
 
 @app.route("/search-img", methods=['GET', 'POST'])
 def search_img():

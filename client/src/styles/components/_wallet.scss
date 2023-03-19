@@ -20,7 +20,7 @@
 
         h4 {
             color: v.$white;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             word-wrap: break-word;
         }
 
@@ -57,6 +57,11 @@
                 color: v.$white;
             }
         }
+    }
+
+    img {
+        width: 64px;
+        height: 64px;
     }
 }
 

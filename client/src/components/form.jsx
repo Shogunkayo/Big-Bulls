@@ -5,6 +5,7 @@ import ProgressBar from "./progressBar"
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { setData } from "../redux/inputSlice";
+import { store } from '../redux/store';
 
 const Form = ({colors}) => {
 
@@ -56,9 +57,22 @@ const Form = ({colors}) => {
         }).then((response) => {
             setSubmitted(progressOptions[3])
             response.json().then((body) => {
-                console.log(body)
-                dispatch(setData(body))
+                let output_array = body.wallet
+                    let parsed_output = {
+                            'wallet' :  [],
+                            'currencies' : [],
+                            'hashes':{}
+                        }
+
+                        for(let i=0; i < output_array.length; i++) {
+                            parsed_output.currencies.push(output_array[i].name)
+                            parsed_output.wallet.push(output_array[i].wal_addr)
+                            parsed_output.hashes[output_array[i].name] =output_array[i].transactions
+                        }
+                        console.log(parsed_output)
+                dispatch(setData(parsed_output))
                 setSubmitted({})
+                console.log(store.getState().data)
                 navigate('/dashboard')
             })
         }) 
@@ -82,21 +96,15 @@ const Form = ({colors}) => {
                 let output = body[0].symbol[0].data.split(':')
                 let request_body = {'type': 'image', 'key' :output[1], 'currency': output[0]}
                 console.log(request_body)
-                setSubmitted(progressOptions[2])
-                fetch('http://localhost:5000/search', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(request_body),
-                    mode: 'cors'
-                }).then((response) => {
-                    setSubmitted(progressOptions[3])
-                    response.json().then((body) => {
-                        console.log(body)
-                        dispatch(setData(body))
+                let parsed_output = {
+                    'wallet' :  [request_body.key],
+                    'currencies' : [request_body.currency]
+                }
+                console.log(parsed_output)
+                        dispatch(setData(parsed_output))
                         setSubmitted({})
-                        navigate('/explore')
-                    })
-                }) 
+                        navigate('/dashboard')
+                setSubmitted(progressOptions[2])
             })
         })
     }
