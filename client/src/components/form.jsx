@@ -58,7 +58,7 @@ const Form = ({colors}) => {
             response.json().then((body) => {
                 dispatch(setData(body))
                 setSubmitted({})
-                navigate('/explore')
+                navigate('/dashboard')
             })
         }) 
     }
