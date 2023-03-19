@@ -10,75 +10,80 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-## Functions for detecting right wallet address
+# Functions for detecting right wallet address
 
-def bitcoin(wal_address,type):
-  if(type=='wallet'):
+
+def bitcoin(wal_address, type):
+  if (type == 'wallet'):
     l = len(wal_address)
     check = 0
-    if(l>=26 and l<=34):
-        check=check+1
-    if(wal_address[0] == '1' or wal_address[0]=='3'):
-        check=check+1
-    if(check==2):
+    if (l >= 26 and l <= 34):
+        check = check+1
+    if (wal_address[0] == '1' or wal_address[0] == '3'):
+        check = check+1
+    if (check == 2):
         return get_transactions_btc(wal_address)
     else:
        return 0
-       
+
   else:
      wal_address = get_wallet_address_btc(wal_address)
      return get_transactions_btc(wal_address)
 
-def ethereum(wal_address,type):
-  if(type=='wallet'):
+
+def ethereum(wal_address, type):
+  if (type == 'wallet'):
     l = len(wal_address)
-    if(len(wal_address)==42 and '0x' in wal_address):
+    if (len(wal_address) == 42 and '0x' in wal_address):
         return get_transaction_ethereum(wal_address)
     else:
         return 0
   else:
      wal_address = get_wallet_address_eth(wal_address)
      return get_transaction_ethereum(wal_address)
-    
+
 
 def monero(wal_address):
   l = len(wal_address)
   check = 0
-  if(l>=76 and l<=95):
-    check=check+1
+  if (l >= 76 and l <= 95):
+    check = check+1
   if wal_address.startswith('4'):
-    check=check+1
-  if check==2:
+    check = check+1
+  if check == 2:
     return 1
   else:
     return 0
-  
-def dash(wal_address,type):
-  if(type=='wallet'):
+
+
+def dash(wal_address, type):
+  if (type == 'wallet'):
     l = len(wal_address)
-    if(l==34 and wal_address.startswith('X')):
+    if (l == 34 and wal_address.startswith('X')):
         return get_transactions_dash(wal_address)
     else:
         return 0
   else:
      wal_address = get_wallet_address_dash(wal_address)
      return get_transactions_dash(wal_address)
-  
-def dogecoin(wal_address,type):
-  if(type=='wallet'):
+
+
+def dogecoin(wal_address, type):
+  if (type == 'wallet'):
     l = len(wal_address)
-    if(l==34 and wal_address.startswith('D')):
+    if (l == 34 and wal_address.startswith('D')):
         return get_transactions_doge(wal_address)
     else:
         return 0
   else:
      wal_address = get_wallet_address_doge(wal_address)
      return get_transactions_doge(wal_address)
-  
-def litecoin(wal_address,type):
-  if(type=='wallet'):
+
+
+def litecoin(wal_address, type):
+  if (type == 'wallet'):
     l = len(wal_address)
-    if(l==34 and (wal_address.startswith('L') or wal_address.startswith('M'))):
+    if (l == 34 and (wal_address.startswith('L') or wal_address.startswith('M'))):
         return get_transaction_litecoin(wal_address)
     else:
         return 0
@@ -86,7 +91,8 @@ def litecoin(wal_address,type):
      wal_address = get_wallet_address_ltc(wal_address)
      return get_transaction_litecoin(wal_address)
 
-## Functions for getting wallet addresses from different keys
+# Functions for getting wallet addresses from different keys
+
 
 def get_wallet_address_eth(pubaddr):
     kins = keccak.new(digest_bits=256)
@@ -111,7 +117,7 @@ def get_wallet_address_btc(publickey_c):
 
 
 def get_wallet_address_doge(public_key_hex):
-    print(type(public_key_hex),public_key_hex+" --> Here")
+    print(type(public_key_hex), public_key_hex+" --> Here")
     public_key_bytes = bytes.fromhex(public_key_hex)
 
     # create an ecdsa VerifyingKey object from the public key bytes
@@ -140,6 +146,7 @@ def get_wallet_address_doge(public_key_hex):
     # base58 encode the address bytes to get the final Dogecoin address
     address = base58.b58encode(address_bytes)
     return str(address.decode())
+
 
 def get_wallet_address_ltc(public_key):
     # add the prefix byte 0x30 to indicate Litecoin's main network
@@ -172,6 +179,7 @@ def get_wallet_address_ltc(public_key):
     address_string = base58.b58encode(address_bytes)
     return str(address_string.decode())
 
+
 def get_wallet_address_dash(public_key):
     sha256_hash = hashlib.sha256(bytes.fromhex(public_key)).digest()
 
@@ -182,7 +190,8 @@ def get_wallet_address_dash(public_key):
     version_hash = b'\x4C' + ripemd160_hash
 
     # Step 4: Hash the version byte + RIPEMD-160 hash twice with SHA-256
-    checksum = hashlib.sha256(hashlib.sha256(version_hash).digest()).digest()[:4]
+    checksum = hashlib.sha256(hashlib.sha256(
+        version_hash).digest()).digest()[:4]
 
     # Step 5: Concatenate the version byte + RIPEMD-160 hash + checksum
     address_bytes = version_hash + checksum
@@ -221,6 +230,7 @@ def get_transactions_btc(key):
     if data4['transaction_count'] == 0:
         return 0
     return 1
+
 
 def get_transactions_doge(key):
     url = "https://api.blockchair.com/dogecoin/dashboards/address/"
@@ -264,7 +274,6 @@ def get_transaction_litecoin(key):
     return 1
 
 
-
 def get_transaction_ethereum(key):
     url = "https://api.blockchair.com/ethereum/dashboards/address/"
     url = url+key
@@ -277,7 +286,6 @@ def get_transaction_ethereum(key):
     if data4['transaction_count'] == 0:
         return 0
     return 1
-
 
 
 def get_transaction_tether(key):
@@ -293,16 +301,19 @@ def get_transaction_tether(key):
         return 0
     return 1
 
-def validate_for_all1(address,type):
+
+def validate_for_all1(address, type):
    mon = monero(address)
-   if(mon==0):
-    btc = bitcoin(address,type)
-    eth = ethereum(address,type)
-    doge = dogecoin(address,type)
-    ltc = litecoin(address,type)
-    if(eth==1): thr = get_transaction_tether(address)
-    else: thr = 0 
-    dsh = dash(address,type)
+   if (mon == 0):
+    btc = bitcoin(address, type)
+    eth = ethereum(address, type)
+    doge = dogecoin(address, type)
+    ltc = litecoin(address, type)
+    if (eth == 1):
+      thr = get_transaction_tether(address)
+    else:
+      thr = 0
+    dsh = dash(address, type)
    else:
       btc = 0
       eth = 0
@@ -310,51 +321,53 @@ def validate_for_all1(address,type):
       ltc = 0
       thr = 0
       dsh = 0
-   
+
    overall_data = {
-      'bitcoin':btc,
-      'ethereum':eth,
-      'dogecoin':doge,
-      'litecoin':ltc,
-      'tether':thr,
-      'dash':dsh,
-      'monero':mon
+       'bitcoin': btc,
+       'ethereum': eth,
+       'dogecoin': doge,
+       'litecoin': ltc,
+       'tether': thr,
+       'dash': dsh,
+       'monero': mon
    }
    return overall_data
 
-def validate_for_all2(address,type):
-   btc = bitcoin(address['Compressed'],type)
-   eth = ethereum(address['Uncompressed'],type)
-   doge = dogecoin(address['Uncompressed'],type)
-   ltc = litecoin(address['Uncompressed'],type)
-   dsh = dash(address['Compressed'],type)
+
+def validate_for_all2(address, type):
+   btc = bitcoin(address['Compressed'], type)
+   eth = ethereum(address['Uncompressed'], type)
+   doge = dogecoin(address['Uncompressed'], type)
+   ltc = litecoin(address['Uncompressed'], type)
+   dsh = dash(address['Compressed'], type)
    overall_data = {
-      'bitcoin':btc,
-      'ethereum':eth,
-      'dogecoin':doge,
-      'litecoin':ltc,
-      'tether':0,
-      'dash':dsh,
-      'monero':0
+       'bitcoin': btc,
+       'ethereum': eth,
+       'dogecoin': doge,
+       'litecoin': ltc,
+       'tether': 0,
+       'dash': dsh,
+       'monero': 0
    }
    return overall_data
+
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == "POST":
         data = request.get_json()
-        if data['type']=='wallet':
-           overall_data = validate_for_all1(data['key'],data['type'])
-        elif data['type']=='public':
+        if data['type'] == 'wallet':
+           overall_data = validate_for_all1(data['key'], data['type'])
+        elif data['type'] == 'public':
             url = "http://localhost:8081/publicKey/"+data['key']
             res = requests.get(url)
             resObj = json.loads(res.text)
-            overall_data = validate_for_all2(resObj,data['type'])
-        elif data['type']=='private':
+            overall_data = validate_for_all2(resObj, data['type'])
+        elif data['type'] == 'private':
             url = "http://localhost:8081/privateKey/"+data['key']
             res = requests.get(url)
             resObj = json.loads(res.text)
-            overall_data = validate_for_all2(resObj,data['type'])
+            overall_data = validate_for_all2(resObj, data['type'])
         else:
            overall_data = data
         print(overall_data)
