@@ -44,7 +44,7 @@ app.get("/privateKey/:privateKey",(req,res)=>{
 
     console.log(privateKey)
 
-    const publicKey = EthCrypto.publicKeyByPrivateKey(privateKey);
+    const publicKey = EthCrypto.publicKeyByPrivateKey(privateKey.slice(0,-2));
     const address = EthCrypto.publicKey.toAddress(publicKey);
     const compressed = EthCrypto.publicKey.compress(publicKey);
 

@@ -28,6 +28,7 @@ def bitcoin(wal_address,type):
         check = check+1
     if (wal_address[0] == '1' or wal_address[0] == '3'):
         check = check+1
+        print("CHECK")
     if (check == 2):
         return get_transactions_btc(wal_address)
     else:
@@ -394,39 +395,33 @@ def get_transaction_tether(key):
     return btc
 
 def validate_for_all1(address,type):
-   invalid = {
+    invalid = {
        'valid':0,
        'wal_addr':"",
        'transactions_num':0,
        'transactions':[]
     }
-   mon = monero(address)
-   if (mon == 0):
+    mon = monero(address)
+    if (mon == 0):
+        mon=invalid
     btc = bitcoin(address, type)
     eth = ethereum(address, type)
     doge = dogecoin(address, type)
     ltc = litecoin(address, type)
     if (eth == 1):
-      thr = get_transaction_tether(address)
+        thr = get_transaction_tether(address)
     else:
-      thr = 0
+        thr = 0
     dsh = dash(address, type)
-   else:
-      btc = invalid
-      eth = invalid
-      doge = invalid
-      ltc = invalid
-      thr = invalid
-      dsh = invalid
    
-   currencies = []
+    currencies = []
 
-   validate = [btc, eth, doge, ltc, thr, dsh, mon]
-   for i in range(len(validate)):
+    validate = [btc, eth, doge, ltc, thr, dsh, mon]
+    for i in range(len(validate)):
       if validate[i]['valid']==1:
          currencies.append(validate[i])
-   overall_data = {'wallet':currencies}
-   return overall_data
+    overall_data = {'wallet':currencies}
+    return overall_data
 
 def validate_for_all2(address,type):
    invalid = {
