@@ -444,33 +444,6 @@ def validate_for_all2(address,type):
    return overall_data
 
 
-def validate_for_all3(address, type):
-   btc = bitcoin(address['Uncompressed'], type)
-   eth = ethereum(address['Uncompressed'], type)
-   doge = dogecoin(address['Uncompressed'], type)
-   ltc = litecoin(address['Uncompressed'], type)
-   dsh = dash(address['Compressed'], type)
-   overall_data = {
-       'bitcoin': btc,
-       'ethereum': eth,
-       'dogecoin': doge,
-       'litecoin': ltc,
-       'tether': 0,
-       'dash': dsh,
-       'monero': 0
-   }
-   return overall_data
-
-
-def check_wif(key):
-    if (key[0] == '5' and len(key) == 51):
-        return 1
-    elif ((key[0] == 'L' or key[0] == 'K') and len(key) == 51):
-        return 2
-    else:
-        return 0
-
-
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == "POST":
@@ -483,25 +456,10 @@ def search():
             resObj = json.loads(res.text)
             overall_data = validate_for_all2(resObj, data['type'])
         elif data['type'] == 'private':
-            wif_value=check_wif(data['key'])
-            #print(wif_value)
-            if wif_value == 1: 
-               url = "http://localhost:8081/privateKey/"+data['key']
-               res = requests.get(url)
-               resObj = json.loads(res.text)
-               overall_data = validate_for_all3(resObj, data['type'])
-            elif wif_value == 2:
-                url = "http://localhost:8081/privateKey/"+data['key']
-                res = requests.get(url)
-                resObj = json.loads(res.text)
-                overall_data = validate_for_all2(resObj, data['type'])
-            else:
-               url = "http://localhost:8081/privateKey/"+data['key']
-               res = requests.get(url)
-               resObj = json.loads(res.text)
-               overall_data = validate_for_all2(resObj, data['type'])
-               
-
+            url = "http://localhost:8081/privateKey/"+data['key']
+            res = requests.get(url)
+            resObj = json.loads(res.text)
+            overall_data = validate_for_all2(resObj, data['type'])
         else:
            overall_data = data
         print(overall_data)

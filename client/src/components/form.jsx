@@ -57,6 +57,7 @@ const Form = ({colors}) => {
             setSubmitted(progressOptions[3])
             response.json().then((body) => {
                 dispatch(setData(body))
+                console.log(body)
                 setSubmitted({})
                 navigate('/dashboard')
             })
@@ -90,7 +91,19 @@ const Form = ({colors}) => {
                 }).then((response) => {
                     setSubmitted(progressOptions[3])
                     response.json().then((body) => {
-                        dispatch(setData(body))
+                        
+                        output_array = body.wallet
+                        parsed_output = {
+                            'wallet' :  [],
+                            'currencies' : []
+                        }
+
+                        for(let i=0; i < output_array.length; i++) {
+                            parsed_output.currencies.push(output_array[i].name)
+                            parsed_output.wallet.push(output_array[i].wal_addr)
+                        }
+
+                        dispatch(setData(parsed_output))
                         setSubmitted({})
                         navigate('/explore')
                     })
