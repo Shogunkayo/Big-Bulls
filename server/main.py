@@ -22,25 +22,39 @@ def bitcoin(wal_address,type):
     if(wal_address[0] == '1' or wal_address[0]=='3'):
         check=check+1
     if(check==2):
-        return get_transactions_btc(wal_address)
-    else:
-       return 0
+        url = "https://api.blockchair.com/bitcoin/dashboards/address/"
+        url = url + wal_address
+        payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
+        res = requests.get(url, params=payload)
+        addr_data = res.json()
+        data2 = addr_data['data']
+        data3 = data2[wal_address]
+        data4 = data3['address']
+        if data4['transaction_count'] == 0:
+            return "invalid data"
+        return "valid"
        
-  else:
+  if(type!='wallet'):
      wal_address = get_wallet_address_btc(wal_address)
-     return get_transactions_btc(wal_address)
+     url = "https://api.blockchair.com/bitcoin/dashboards/address/"
+     url = url + wal_address
+     payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
+     res = requests.get(url, params=payload)
+     addr_data = res.json()
+     data2 = addr_data['data']
+     data3 = data2[wal_address]
+     data4 = data3['address']
+     if data4['transaction_count'] == 0:
+        return "invalid data"
+     return "valid"
 
-def ethereum(wal_address,type):
-  if(type=='wallet'):
-    l = len(wal_address)
-    if(len(wal_address)==42 and '0x' in wal_address):
-        return get_transaction_ethereum(wal_address)
-    else:
-        return 0
+def etherium(wal_address):
+  l = len(wal_address)
+  check = 0
+  if(len(wal_address)==42 and '0x' in wal_address):
+    return 1
   else:
-     wal_address = get_wallet_address_eth(wal_address)
-     return get_transactions_btc(wal_address)
-    
+    return 0
 
 def monero(wal_address):
   l = len(wal_address)
@@ -61,27 +75,19 @@ def dash(wal_address):
   else:
     return 0
   
-def dogecoin(wal_address,type):
-  if(type=='wallet'):
-    l = len(wal_address)
-    if(l==34 and wal_address.startswith('D')):
-        return get_transactions_doge(wal_address)
-    else:
-        return 0
+def dogecoin(wal_address):
+  l = len(wal_address)
+  if(l==34 and wal_address.startswith('D')):
+    return 1
   else:
-     wal_address = get_wallet_address_doge(wal_address)
-     return get_transactions_doge(wal_address)
+    return 0
   
-def litecoin(wal_address,type):
-  if(type=='wallet'):
-    l = len(wal_address)
-    if(l==34 and (wal_address.startswith('L') or wal_address.startswith('M'))):
-        return get_transaction_litecoin(wal_address)
-    else:
-        return 0
+def litecoin(wal_address):
+  l = len(wal_address)
+  if(l==34 and (wal_address.startswith('L') or wal_address.startswith('M'))):
+    return 1
   else:
-     wal_address = get_wallet_address_ltc(wal_address)
-     return get_transaction_litecoin(wal_address)
+    return 0
 
 ## Functions for getting wallet addresses from different keys
 
@@ -199,6 +205,7 @@ def get_transactions_btc(key):
     return 1
 
 def get_transactions_doge(key):
+
     url = "https://api.blockchair.com/dogecoin/dashboards/address/"
     url = url + key
     payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
@@ -271,27 +278,15 @@ def get_transaction_tether(key):
 
 def validate_for_all1(address,type):
    btc = bitcoin(address,type)
-   eth = ethereum(address,type)
-   doge = dogecoin(address,type)
-   ltc = litecoin(address,type)
    overall_data = {
-      'bitcoin':btc,
-      'ethereum':eth,
-      'dogecoin':doge,
-      'litecoin':ltc
+      'bitcoin':btc
    }
    return overall_data
 
 def validate_for_all2(address,type):
    btc = bitcoin(address['Compressed'],type)
-   eth = ethereum(address['Uncompressed'],type)
-   doge = dogecoin(address['Uncompressed'],type)
-   ltc = litecoin(address['Uncompressed'],type)
    overall_data = {
-      'bitcoin':btc,
-      'ethereum':eth,
-      'dogecoin':doge,
-      'litecoin':ltc
+      bitcoin:btc
    }
    return overall_data
 
