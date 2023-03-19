@@ -1,6 +1,6 @@
 import testBtn from '../assets/wallet.png'
 
-const Wallet = ({wallet, setDisplay}) => {
+const Wallet = ({wallet, handleDisplay}) => {
 
     const coinIcons = {
         'bitcoin': testBtn,
@@ -31,8 +31,8 @@ const Wallet = ({wallet, setDisplay}) => {
             </div>
             
             <div className='wallet-nav'>
-                <button className='wallet-nav-btn'>Transactions</button>
-                <button className='wallet-nav-btn'>Fraud Analysis</button>
+                <button className='wallet-nav-btn' onClick={() => {handleDisplay(0)}}>Transactions</button>
+                <button className='wallet-nav-btn' onClick={() => {handleDisplay(1)}}>Fraud Analysis</button>
             </div>
 
         </div>
