@@ -1,11 +1,25 @@
-import testBtn from '../assets/wallet.png'
+import bitcoinBtn from '../assets/Bitcoin.png'
+import dashBtn from '../assets/dash-d.png'
+import dogeBtn from '../assets/doge.png'
+import ethBtn from '../assets/etherium.png'
+import liteBtn from '../assets/litecoin.png'
+import moneroBtn from '../assets/monero.png'
+import tetherBtn from '../assets/tether.png'
 
 const Wallet = ({wallet, handleDisplay}) => {
 
     const coinIcons = {
-        'bitcoin': testBtn,
-        'monero': testBtn,
-        'ether': testBtn
+        'bitcoin': bitcoinBtn,
+        'monero': moneroBtn,
+        'etherium': ethBtn,
+        'dash': dashBtn,
+        'doge': dogeBtn,
+        'lite': liteBtn,
+        'tether': tetherBtn
+    }
+
+    const handleCoin = (e) => {
+        
     }
 
     return (
@@ -22,8 +36,8 @@ const Wallet = ({wallet, handleDisplay}) => {
                         <h4 className='currency-error'>No known currencies found</h4>
                     )}
                     {wallet.currencies?.map((currency, i) => (
-                        <div key={i} className="currency">
-                            <img src={testBtn} alt="currency"/>
+                        <div key={i} className="currency" onClick={handleCoin}>
+                            <img src={coinIcons[currency]} alt="currency"/>
                             <h4>{currency}</h4>
                         </div>
                     ))}
