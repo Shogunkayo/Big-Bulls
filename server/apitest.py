@@ -1,6 +1,6 @@
 
 
-private_key = "5Kb8kLf9zgWQnogidDA76MzPL6TsZZY36hWXMssSzNydYXYB9KF"
+private_key = "5KfBcvjtZHgvx4UTGwrLhpvCJDGKL4BhcwCuK7bu9JpfVGuf1VV"
 
 
 def check_wif(key):
