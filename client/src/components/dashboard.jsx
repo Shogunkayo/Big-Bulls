@@ -11,30 +11,13 @@ const Dashboard = () => {
 
     const [display, setDisplay] = useState(0)
     const [transactions, setTransactions] = useState('')
-    const [fraudAddr, setFraudAddr] = useState('')
     const [fraudData, setFraudData] = useState('')
-
-    const {data} = useSelector(state => state.data)
 
     const wallet = {
         'wallet': store.getState().data.inputData.wallet,
         'currencies': store.getState().data.inputData.currencies,
         'hashes': store.getState().data.inputData.hashes
     }
-
-    useEffect(() => {
-        console.log(display)
-        if(display == 2) {
-            fetch(`https://www.bitcoinabuse.com/api/reports/check?address=${wallet.wallet[0]}&api_token=oXLHUhVIAdOZsBsBx7zODdSPrBEQdsTihQbCeHyD`, {
-                method: 'GET',
-                mode: 'cors'
-            }).then((response) => {
-                response.json().then((body) => {
-                    setFraudData(body)
-                })
-            })
-        }
-    }, [display])
 
     //const transactions = data.inputData.transactions
 
@@ -54,9 +37,9 @@ const Dashboard = () => {
             </div>
 
             <div className='dashboard-content'>
-                <Wallet wallet={wallet} handleDisplay={setDisplay} handleTransactions={setTransactions}></Wallet>
+                <Wallet wallet={wallet} handleDisplay={setDisplay} handleTransactions={setTransactions} handleFraudData={setFraudData}></Wallet>
                 {display == 1 && (<Transactions transactions={transactions}></Transactions>)}
-                {display == 2 && fraudAddr && (<Fraud fraudData={fraudData}></Fraud>)}
+                {display == 2 && (<Fraud fraudData={fraudData}></Fraud>)}
             </div>
         </div>
     );

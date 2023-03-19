@@ -40,10 +40,10 @@ const Transactions = ({transactions}) => {
                                 <h5><span className="highlight">Time: </span>{transaction.time}</h5>
                             </div>
                             <div>
-                                <h5><span className="highlight">Currency Amount: </span>{transaction.value}</h5>
+                                <h5><span className="highlight">Satoshi Value: </span>{transaction.value}</h5>
                             </div>
                             <div>
-                                <h5><span className="highlight">USD Amount: </span>{transaction.value_usd}</h5>
+                                <h5><span className="highlight">USD Value: </span>{transaction.value_usd}</h5>
                             </div>
             
                         </div>

@@ -33,10 +33,18 @@
             .currency {
                 display: flex;
                 padding: 30px 20px;
-
+                cursor: pointer;
                 h4 {
+                    position: relative;
                     padding-left: 5px;
                     padding-top: 20px;
+                    font-size: 1.3rem;
+                    left: 20px;
+                }
+
+                &:hover {
+                    background-color: v.$dgreen;
+                    border-radius: 10px;
                 }
             }
         }
