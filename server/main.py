@@ -334,8 +334,12 @@ def get_transaction_litecoin(key):
     data3 = data2[key]
     data4 = data3['address']
     if data4['transaction_count'] == 0:
-        return 0
-    return 1
+        return btc
+    btc['valid'] = 1
+    btc['wal_addr'] = key
+    btc['transactions_num'] = data4['transaction_count']
+    btc['transactions'] = data3['transactions']
+    return btc
 
 
 
@@ -356,8 +360,12 @@ def get_transaction_ethereum(key):
     data3 = data2[key]
     data4 = data3['address']
     if data4['transaction_count'] == 0:
-        return 0
-    return 1
+        return btc
+    btc['valid'] = 1
+    btc['wal_addr'] = key
+    btc['transactions_num'] = data4['transaction_count']
+    btc['transactions'] = data3['calls']
+    return btc
 
 
 
@@ -414,9 +422,9 @@ def validate_for_all1(address,type):
    currencies = []
 
    validate = [btc, eth, doge, ltc, thr, dsh, mon]
-   for i in validate:
-      if i['valid']==1:
-         currencies.append(i)
+   for i in range(len(validate)):
+      if validate[i]['valid']==1:
+         currencies.append(validate[i])
    overall_data = {'wallet':currencies}
    return overall_data
 
@@ -437,9 +445,9 @@ def validate_for_all2(address,type):
    currencies = []
 
    validate = [btc, eth, doge, ltc, thr, dsh, mon]
-   for i in validate:
-      if i['valid']==1:
-         currencies.append(i)
+   for i in range(len(validate)):
+      if validate[i]['valid']==1:
+         currencies.append(validate[i])
    overall_data = {'wallet':currencies}
    return overall_data
 

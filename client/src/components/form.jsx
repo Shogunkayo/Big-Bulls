@@ -56,6 +56,7 @@ const Form = ({colors}) => {
         }).then((response) => {
             setSubmitted(progressOptions[3])
             response.json().then((body) => {
+                console.log(body)
                 dispatch(setData(body))
                 setSubmitted({})
                 navigate('/dashboard')
@@ -90,6 +91,7 @@ const Form = ({colors}) => {
                 }).then((response) => {
                     setSubmitted(progressOptions[3])
                     response.json().then((body) => {
+                        console.log(body)
                         dispatch(setData(body))
                         setSubmitted({})
                         navigate('/explore')
