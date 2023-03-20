@@ -1,56 +1,68 @@
 @use '../variables' as v;
+@use '../breakpoints' as b;
 
 .home-container {
     display: flex;
     height: 100vh;
-}
 
-.nav-left {
-    display: flex;
-    position: relative;
-    
-    img {
-        position: absolute;
-        left: 20px;
-        top: 10px;
-        width: 96px;
-        height: 96px;
+    @include b.lg {
+        flex-direction: column;
+        overflow-x: hidden;
     }
 
-    h1 {
-        margin-left: 80px;
-        font-size: 2.5rem;
-        padding: 25px 40px;
-    }
-
-    div {
-        padding: 33px 60px;
-        button {
-            margin: 0px 25px;
-            padding: 10px;
-            &:hover{
-                background-color: v.$dgreen;
-                color: v.$white;
-            }
+    >div {
+        @include b.lg {
+            padding-bottom: 200px;
         }
+    }
+
+    &::-webkit-scrollbar {
+        width: 8px;
+        background-color: v.$lblack;
+    }
+    
+    &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 10px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: v.$dgreen;
+        border-radius: 10px;
     }
 }
 
 .home-left {
-    width: 150vw;
+    width: 180vw;
     background-color: v.$cream;
     background-size: 100px 100px;
-    background-image: radial-gradient(
-        v.$lgray 5%,
-        transparent 10%
-    );
+    background-image: radial-gradient(v.$lgray 5%,
+            transparent 10%);
 
-    > div {
-        position: absolute;
-        top: 30%;
-        left: 6%;
+    .nav-left {
+        display: flex;
+        position: relative;
+
+        img {
+            position: absolute;
+            left: 20px;
+            top: 10px;
+            width: 96px;
+            height: 96px;
+        }
+
+        h2 {
+            margin-left: 80px;
+            padding: 25px 40px;
+        }
+    }
+
+    >div {
+        position: relative;
+        top: 20%;
+        left: 10%;
+
         h1 {
-            font-size: 3.5rem;
             line-height: 70px;
             padding-bottom: 15px;
         }
@@ -58,92 +70,100 @@
         p {
             color: v.$lblack;
             width: 60%;
-            font-size: 1.4rem;
             padding-bottom: 15px;
         }
     }
-}
 
-.home-form {
-    form{
-        display: flex;
+    @include b.lg {
+        width: 100vw;
+    }
 
-        > div {
-            width: 15%;
-            margin-right: 10px;
-            font-size: 1.2rem;
-        }
-
-        input {
-            width: 40%;
-            font-size: 1.3rem;  
-            border-radius: 10px; 
-        }
-        
-        button {
-            background-color: v.$dblack;
-            color: v.$cream;
-            margin: 0px 10px;
-            padding: 10px;
-            &:hover{
-                background-color: v.$dgreen;
-                color: v.$white;
-            }
-        }
-
-        .form-image {
+    .home-form {
+        form {
             display: flex;
-            justify-content: space-between;
-            width: 310px;
-        }
-    }
 
-    .form-error{
-        color: v.$red;
-        font-size: 1.3rem;
-        padding: 20px 0px;
-    }
+            >div {
+                width: 15%;
+                margin-right: 10px;
+                font-size: 1.3rem;
 
-    .image-upload input {
-        display: none;
-    }    
+                @include b.xl {
+                    font-size: 1rem;
+                }
 
-    .image-upload-label {
-        cursor: pointer;
-    }
-    
-    .image-upload-label p{
-        text-align: center;
-        font-weight: 400;
-        font-size: 1.3rem;
-        border: none;
-        border-radius: 10px;
-        color: v.$cream;
-        background-color: v.$dblack;
-        width: 150px;
-        padding: 4px 0px;
-        height: 35px;
-    }
-    
-    .image-upload-label p:hover {
-        background-color: v.$dgreen;
-        color: v.$white;
-    }
-}
+                @include b.lg {
+                    font-size: 1.3rem;
+                }
 
-.nav-right{
-    display: flex;
-    position: relative;
-    justify-content: flex-end;
-    div {
-        padding: 33px 60px;
-        button {
-            margin: 0px 25px;
-            padding: 10px;
-            &:hover{
-                background-color: v.$dgreen;
-                color: v.$white;
+                @include b.md {
+                    font-size: 1rem;
+                }
             }
+
+            input {
+                width: 40%;
+                border-radius: 10px;
+            }
+
+            button {
+                background-color: v.$dblack;
+                color: v.$cream;
+                margin: 0px 10px;
+                padding: 10px;
+
+                &:hover {
+                    background-color: v.$dgreen;
+                    color: v.$white;
+                }
+            }
+
+            .form-image {
+                display: flex;
+                justify-content: space-between;
+                width: 310px;
+            }
+        }
+
+        .form-error {
+            color: v.$red;
+            padding: 20px 0px;
+        }
+
+        .image-upload input {
+            display: none;
+        }
+
+        .image-upload-label {
+            cursor: pointer;
+        }
+
+        .image-upload-label p {
+            text-align: center;
+            font-weight: 400;
+            border: none;
+            border-radius: 10px;
+            color: v.$cream;
+            background-color: v.$dblack;
+            width: 150px;
+            padding: 4px 0px;
+            height: 35px;
+
+            @include b.xxl {
+                height: 30px;
+            }
+
+            @include b.lg {
+                height: 35px;
+            }
+
+            @include b.md {
+                height: 30px;
+            }
+        }
+
+        .image-upload-label p:hover {
+            background-color: v.$dgreen;
+            color: v.$white;
         }
     }
 }
@@ -152,16 +172,41 @@
     color: v.$dgreen;
     background-color: v.$lblack;
 
-    > div {
+    .nav-right {
+        display: flex;
+        position: relative;
+        justify-content: flex-end;
+
+        @include b.lg {
+            justify-content: center;
+        }
+
+        div {
+            padding: 33px 60px;
+
+            button {
+                margin: 0px 25px;
+                padding: 10px;
+                border: 1px solid v.$dgreen;
+
+                &:hover {
+                    background-color: v.$dgreen;
+                    color: v.$lblack;
+                }
+            }
+        }
+    }
+
+    >div {
         display: flex;
         flex-direction: column;
         margin-left: 200px;
-        padding-top: 20px;
+        padding-top: 15px;
         position: relative;
 
-        > div {
+        >div {
             padding: 40px 0px;
-            width: 60%;
+            width: 70%;
 
             img {
                 position: absolute;
@@ -171,7 +216,6 @@
 
             h3 {
                 color: v.$lgreen;
-                font-size: 2.3rem;
                 line-height: 40px;
             }
 
