@@ -49,3 +49,21 @@ $breakpoints: (
         @content;
     }
 }
+
+@mixin hlg {
+    @media (max-height: map-get($breakpoints, "lg")) {
+        @content;
+    }
+}
+
+@mixin hmd {
+    @media (max-height: map-get($breakpoints, "md")) {
+        @content;
+    }
+}
+
+@mixin hsm {
+    @media (max-width: map-get($breakpoints, "sm")) {
+        @content;
+    }
+}
