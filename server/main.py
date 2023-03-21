@@ -550,13 +550,5 @@ def return_transaction_details():
     return jsonify(returnObj)
 
 
-@app.route("/search-img", methods=['GET', 'POST'])
-def search_img():
-    if request.method == "POST":
-        data = request.files.get('image')
-        print(data)
-    return "Done"
-
-
 if __name__ == "__main__":
     app.run(debug=True)
