@@ -256,7 +256,7 @@ def get_transactions_dash(key):
     }
     url = "https://api.blockchair.com/dash/dashboards/address/"
     url = url + key + "?limit=5"
-    payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
+    payload = {'key': 'dc5a99407130725d0aa6fb847f6f764fbbf0f6f67c16b98127b6baf036ed99e5'}
     res = requests.get(url, params=payload)
     addr_data = res.json()
     data2 = addr_data['data']
@@ -281,7 +281,7 @@ def get_transactions_btc(key):
     }
     url = "https://api.blockchair.com/bitcoin/dashboards/address/"
     url = url + key + "?limit=5"
-    payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
+    payload = {'key': 'dc5a99407130725d0aa6fb847f6f764fbbf0f6f67c16b98127b6baf036ed99e5'}
     res = requests.get(url, params=payload)
     addr_data = res.json()
     print(addr_data)
@@ -307,7 +307,7 @@ def get_transactions_doge(key):
     }
     url = "https://api.blockchair.com/dogecoin/dashboards/address/"
     url = url + key + "?limit=5"
-    payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
+    payload = {'key': 'dc5a99407130725d0aa6fb847f6f764fbbf0f6f67c16b98127b6baf036ed99e5'}
     res = requests.get(url, params=payload)
     addr_data = res.json()
     data2 = addr_data['data']
@@ -332,7 +332,7 @@ def get_transaction_litecoin(key):
     }
     url = "https://api.blockchair.com/litecoin/dashboards/address/"
     url = url+key + "?limit=5"
-    payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
+    payload = {'key': 'dc5a99407130725d0aa6fb847f6f764fbbf0f6f67c16b98127b6baf036ed99e5'}
     res = requests.get(url, params=payload)
     addr_data = res.json()
     data2 = addr_data['data']
@@ -357,7 +357,7 @@ def get_transaction_ethereum(key):
     }
     url = "https://api.blockchair.com/ethereum/dashboards/address/"
     url = url+key + "?limit=5"
-    payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
+    payload = {'key': 'dc5a99407130725d0aa6fb847f6f764fbbf0f6f67c16b98127b6baf036ed99e5'}
     res = requests.get(url, params=payload)
     addr_data = res.json()
     data2 = addr_data['data']
@@ -382,7 +382,8 @@ def get_transaction_tether(key):
     }
     url = "https://api.blockchair.com/ethereum/erc-20/0xdac17f958d2ee523a2206206994597c13d831ec7/dashboards/address/"
     url = url+key + "?limit=5"
-    payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
+    
+    payload = {'key': 'dc5a99407130725d0aa6fb847f6f764fbbf0f6f67c16b98127b6baf036ed99e5'}
     res = requests.get(url, params=payload)
     addr_data = res.json()
     data2 = addr_data['data']
@@ -526,7 +527,7 @@ def return_transaction_details():
             if i != len(data['hashes'])-1:
                 url = url + ","
         print(url)
-        payload = {'key': 'G___mnbXHkLk56C80jkTPzLBqiqgKqGs'}
+        payload = {'key': 'dc5a99407130725d0aa6fb847f6f764fbbf0f6f67c16b98127b6baf036ed99e5'}
         res = requests.get(url, params=payload)
         resObj = res.json()
         data2 = resObj['data']
